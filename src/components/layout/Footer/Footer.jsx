@@ -50,7 +50,7 @@ export default function Footer() {
         <div className="footer-contact">
           <strong>Quer falar conosco?</strong>
           <a href="https://wa.me/5511998895254" target="_blank" rel="noreferrer noopener">
-            <span aria-hidden="true">◉</span> Tel.: (11) 99889-5254
+            <span aria-hidden="true"><i class="fa-brands fa-whatsapp"></i></span> Tel.: (11) 99889-5254
           </a>
         </div>
         
