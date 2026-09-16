@@ -30,6 +30,12 @@ const socialIconMap = {
   youtube: YoutubeIcon,
 };
 
+const socialLinks = {
+  facebook: "https://www.facebook.com/alexandre.ivo.1",
+  instagram: "https://www.instagram.com/alexandreivomusico",
+  youtube: "https://www.youtube.com/alexandreivomusico",
+};
+
 export default function Footer() {
   return (
     <footer className="pagefoot" data-od-id="footer" aria-label="Rodape do site Alexandre Ivo">
@@ -49,9 +55,20 @@ export default function Footer() {
         </div>
         
         <div className="footer-socials">
-          {["facebook", "instagram", "youtube"].map((icon) => {
+          {Object.entries(socialLinks).map(([icon, href]) => {
             const Icon = socialIconMap[icon];
-            return <a key={icon} href="#" className={`footer-social-link footer-social-link--${icon}`} aria-label={icon}>{Icon && <Icon />}</a>;
+            return (
+              <a
+                key={icon}
+                href={href}
+                target="_blank"
+                rel="noreferrer noopener"
+                className={`footer-social-link footer-social-link--${icon}`}
+                aria-label={icon}
+              >
+                {Icon && <Icon />}
+              </a>
+            );
           })}
         </div>
       </div>
