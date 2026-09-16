@@ -2,7 +2,7 @@ import Layout from "../../components/layout/Layout/Layout.jsx";
 import SEO from "../../components/seo/SEO.jsx";
 import BlogArticleCard from "../../components/BlogArticleCard/BlogArticleCard.jsx";
 import { useSupabaseList } from "../../hooks/useSupabaseContent.js";
-import { Search } from "lucide-react";
+import { ChevronLeft, ChevronRight, Search } from "lucide-react";
 import { Fragment, useEffect, useMemo, useState } from "react";
 
 export default function Blog() {
@@ -48,6 +48,14 @@ export default function Blog() {
   const heroImages = [hero?.image_1, hero?.image_2, hero?.image_3].filter(Boolean);
   const isHeroCarousel = hero?.mode === "carousel" && heroImages.length > 1;
 
+  function showPreviousHeroImage() {
+    setHeroImageIndex((current) => (current - 1 + heroImages.length) % heroImages.length);
+  }
+
+  function showNextHeroImage() {
+    setHeroImageIndex((current) => (current + 1) % heroImages.length);
+  }
+
   useEffect(() => {
     setHeroImageIndex(0);
   }, [hero?.mode, hero?.image_1, hero?.image_2, hero?.image_3]);
@@ -91,19 +99,54 @@ export default function Blog() {
       <Layout>
         <section
           className="blog-hero"
-          aria-labelledby="blog-title"
+          aria-label={isHeroCarousel ? "Carrossel de imagens do blog" : undefined}
+          aria-labelledby={isHeroCarousel ? undefined : "blog-title"}
           style={{
             backgroundImage: `linear-gradient(90deg, rgba(10, 9, 20, 0.05) 0%, rgba(10, 9, 20, 0.05) 100%), url("${heroImages[heroImageIndex] || "/assets/images/Banner.png"}")`,
           }}
         >
-          <div className="container blog-hero__inner">
-            <div className="blog-hero__content">
-              <h1 id="blog-title">BLOG DO ALEXANDRE IVO</h1>
-              <p className="blog-hero__subtitle">
-                Artigos para quem quer aprender a tocar, pra quem toca e pra quem apenas gosta de música
-              </p>
+          {!isHeroCarousel && (
+            <div className="container blog-hero__inner">
+              <div className="blog-hero__content">
+                <h1 id="blog-title">BLOG DO ALEXANDRE IVO</h1>
+                <p className="blog-hero__subtitle">
+                  Artigos para quem quer aprender a tocar, pra quem toca e pra quem apenas gosta de música
+                </p>
+              </div>
             </div>
-          </div>
+          )}
+          {isHeroCarousel && (
+            <>
+              <button
+                className="blog-hero__control blog-hero__control--previous"
+                type="button"
+                aria-label="Imagem anterior do hero"
+                onClick={showPreviousHeroImage}
+              >
+                <ChevronLeft aria-hidden="true" />
+              </button>
+              <button
+                className="blog-hero__control blog-hero__control--next"
+                type="button"
+                aria-label="Próxima imagem do hero"
+                onClick={showNextHeroImage}
+              >
+                <ChevronRight aria-hidden="true" />
+              </button>
+              <div className="blog-hero__dots" aria-label="Paginação do hero">
+                {heroImages.map((image, index) => (
+                  <button
+                    className={`blog-hero__dot ${index === heroImageIndex ? "is-active" : ""}`}
+                    key={image}
+                    type="button"
+                    aria-label={`Exibir imagem ${index + 1}`}
+                    aria-current={index === heroImageIndex ? "true" : undefined}
+                    onClick={() => setHeroImageIndex(index)}
+                  />
+                ))}
+              </div>
+            </>
+          )}
         </section>
 
         <section className="blog-featured-banner" aria-label="Destaques do blog">
