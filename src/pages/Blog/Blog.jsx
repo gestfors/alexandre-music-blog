@@ -148,8 +148,8 @@ export default function Blog() {
               </form>
 
               <p className="blog-sidebar-heading">
-                CLIQUE E CONHEÇA O MELHOR
-                <span>CURSO LIVRE DE BAIXO</span>
+                CLIQUE E APROVEITE AS
+                <span>OFERTAS</span>
               </p>
 
               <div className="blog-sidebar-promos">
