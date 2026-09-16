@@ -31,7 +31,7 @@ export default function Blog() {
     orderBy: "sort_order",
     ascending: true,
     select: "id,category,title,url,image,tone,sort_order",
-    limit: 3,
+    limit: 6,
     mapper: (promo) => promo,
   });
 

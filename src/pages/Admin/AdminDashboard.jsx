@@ -314,6 +314,12 @@ export default function AdminDashboard() {
       return;
     }
 
+    const { data: sessionData, error: sessionError } = await supabase.auth.refreshSession();
+    if (sessionError || !sessionData.session) {
+      setStatus("Sua sessão expirou. Saia do painel e entre novamente.");
+      return;
+    }
+
     setImageLoadingFields((current) => [...new Set([...current, fieldName])]);
     setStatus("Enviando imagem para o Supabase Storage...");
 
@@ -393,6 +399,12 @@ export default function AdminDashboard() {
 
     if (!isSupabaseConfigured) {
       setStatus("Configure o Supabase antes de salvar.");
+      return;
+    }
+
+    const { data: sessionData, error: sessionError } = await supabase.auth.refreshSession();
+    if (sessionError || !sessionData.session) {
+      setStatus("Sua sessão expirou. Saia do painel e entre novamente.");
       return;
     }
 
