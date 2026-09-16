@@ -851,7 +851,6 @@ h3 {
   height: auto;
   aspect-ratio: 16 / 9;
   flex: 0 0 auto;
-  border-bottom: 2px dotted #111;
 }
 
 .blog-card--compact .blog-card-body {
@@ -1251,7 +1250,7 @@ h3 {
   grid-row: 1;
   align-self: center;
   padding: 0 16px;
-  color: #777;
+  color: #000000;
   font-size: 16px;
   pointer-events: none;
 }
@@ -1265,8 +1264,7 @@ h3 {
   border: 0;
   border-radius: 12px 0 0 12px;
   outline: 0;
-  background: #2e2e2e80;
-  color: #222;
+  background: #2e2e2e10;
   font: inherit;
 }
 
@@ -1282,8 +1280,8 @@ h3 {
   place-items: center;
   border: 0;
   border-radius: 0 12px 12px 0;
-  background: #65707c;
-  color: #fff;
+  background: var(--bg);
+  color: var(--fg);
   cursor: pointer;
 }
 
