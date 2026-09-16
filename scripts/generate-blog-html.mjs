@@ -82,7 +82,7 @@ function createSocialHtml(indexHtml, { title, description, image, url, type = "w
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="${title}" />
-  <meta property="og:site_name" content="Robson Svicero" />
+  <meta property="og:site_name" content="Alexandre Music Blog" />
   <meta property="og:locale" content="pt_BR" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="${title}" />
@@ -112,7 +112,7 @@ async function generateBlogHtmls() {
 
   const supabaseUrl = process.env.VITE_SUPABASE_URL;
   const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY;
-  const siteUrl = process.env.VITE_SITE_URL || "https://robsonsvicero.com.br";
+  const siteUrl = process.env.VITE_SITE_URL || "https://alexandre-music-blog.vercel.app";
 
   if (!supabaseUrl || !supabaseAnonKey) {
     console.warn(
@@ -138,9 +138,9 @@ async function generateBlogHtmls() {
   const blogDirPath = path.join(DIST_PATH, "blog");
   await mkdir(blogDirPath, { recursive: true });
   const blogHtml = createSocialHtml(indexHtml, {
-    title: "Blog sobre Criação de sites, UX, SEO e Landing Pages | Robson Svicero",
-    description: "Artigos sobre criação de sites, UX Design, SEO técnico, landing pages, interfaces digitais e estratégia para presença digital.",
-    image: `${siteUrl}/assets/images/og-image.webp`,
+    title: "Alexandre Music Blog | Música, cultura e novidades",
+    description: "Notícias, entrevistas, lançamentos e histórias sobre música.",
+    image: `${siteUrl}/assets/images/og_image.jpg`,
     url: `${siteUrl}/blog/`,
   });
   await writeFile(path.join(blogDirPath, "index.html"), blogHtml, "utf-8");
@@ -148,9 +148,9 @@ async function generateBlogHtmls() {
   for (const post of posts) {
     if (!post.slug) continue;
 
-    const title = escapeHtml(post.seo_title || post.title || "Artigo | Robson Svicero");
+    const title = escapeHtml(post.seo_title || post.title || "Artigo | Alexandre Ivo");
     const description = escapeHtml(
-      post.seo_description || post.excerpt || "Artigo publicado por Robson Svicero.",
+      post.seo_description || post.excerpt || "Artigo publicado por Alexandre Ivo.",
     );
     const image = escapeHtml(absoluteUrl(post.image || post.thumbnail, siteUrl));
     const url = escapeHtml(post.canonical_url || `${siteUrl}/blog/${post.slug}`);

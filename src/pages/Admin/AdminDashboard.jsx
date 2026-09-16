@@ -546,7 +546,7 @@ export default function AdminDashboard() {
   return (
     <>
       <SEO
-        title="Painel administrativo | Robson Svicero"
+        title="Painel administrativo | Alexandre Ivo"
         description="Acesso interno para gerenciar conteúdos do site de criação de sites em São Paulo."
         path="/admin"
         robots="noindex, nofollow"

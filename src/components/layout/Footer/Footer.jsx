@@ -48,6 +48,10 @@ export default function Footer() {
             <span aria-hidden="true">◉</span> Tel.: (11) 91234-5678
           </a>
         </div>
+        <div className="footer-credit">
+          <span>Desenvolvido por:</span>
+          <img src="/assets/images/logo_robson.png" alt="Robson Svicero" width={80} />
+        </div>
         <div className="footer-socials">
           {["facebook", "instagram", "youtube"].map((icon) => {
             const Icon = socialIconMap[icon];

@@ -196,7 +196,7 @@ export default function BlogPost() {
   const paragraphs = getPostParagraphs(post);
   const introParagraphs = getIntroParagraphs(post.intro);
   const canonicalUrl = post.canonicalUrl || absoluteUrl(post.path);
-  const authorName = authorProfile?.name || post.author || "Robson Svicero";
+  const authorName = authorProfile?.name || post.author || "Alexandre Ivo";
   const hasRichContent = hasHtmlContent(post.content);
   const structuredData = {
     "@context": "https://schema.org",

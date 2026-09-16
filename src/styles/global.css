@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════
-   STYLES.CSS — Robson Svicero
+   STYLES.CSS — Alexandre Ivo
    Organizado: base → componentes → responsivo
 ═══════════════════════════════════════════════════════ */
 
@@ -2700,40 +2700,58 @@ h3 {
 .admin-dashboard-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-6);
+  gap: 24px;
 }
 
 .admin-dashboard-card {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
-  padding: var(--space-6);
-  border: 1px solid var(--fg);
-  border-radius: var(--radius-lg);
-  background: var(--fg-2);
+  min-height: 280px;
+  padding: 43px 24px 40px;
+  border: 1px solid #242424;
+  border-radius: 16px;
+  background: #505050;
 }
 
 .admin-dashboard-card svg {
-  width: 36px;
-  height: 36px;
-  color: var(--bg);
-  stroke-width: 1.8;
+  width: 35px;
+  height: 35px;
+  margin-bottom: 14px;
+  color: #ff3d46;
+  stroke-width: 1.7;
 }
 
 .admin-dashboard-card span {
-  color: var(--bg);
-  font-size: var(--text-sm);
+  color: #f1eee9;
+  font-size: 15px;
+  line-height: 1.25;
 }
 
 .admin-dashboard-card strong {
-  color: var(--bg);
+  margin-top: 18px;
+  color: #f8f1e8;
   font-family: var(--font-display);
-  font-size: var(--text-3xl);
+  font-size: 48px;
+  font-weight: 700;
   line-height: 1;
 }
 
 .admin-dashboard-card .btn {
-  width: fit-content;
+  width: 100%;
+  min-height: 44px;
+  margin-top: auto;
+  padding-inline: 12px;
+  border: 1px solid #d8d1c8;
+  background: #f4eee6;
+  color: #303030;
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+.admin-dashboard-card .btn:hover {
+  border-color: #ffffff;
+  background: #ffffff;
+  color: #202020;
 }
 
 .admin-list,
@@ -5764,6 +5782,23 @@ h3 {
 .footer-contact a span {
   font-size: 13px;
   color: #ffffff;
+}
+
+.footer-credit {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  color: #f1eee9;
+  font-size: 12px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.footer-credit img {
+  width: 80px;
+  height: auto;
+  object-fit: contain;
 }
 
 .footer-socials {
