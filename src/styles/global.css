@@ -2699,14 +2699,15 @@ h3 {
 
 .admin-dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(3, 280px);
   gap: 24px;
 }
 
 .admin-dashboard-card {
   display: flex;
   flex-direction: column;
-  min-height: 280px;
+  width: 280px;
+  height: 280px;
   padding: 43px 24px 40px;
   border: 1px solid #242424;
   border-radius: 16px;
@@ -6438,7 +6439,13 @@ h3 {
   }
 
   .admin-dashboard-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .admin-dashboard-card {
+    width: 100%;
+    height: 280px;
   }
 
   .admin-header,
@@ -6702,6 +6709,37 @@ h3 {
   .digital-card-copy {
     margin-top: 22px;
     font-size: 15px;
+  }
+
+  .admin-dashboard-grid {
+    gap: 12px;
+  }
+
+  .admin-dashboard-card {
+    padding: 28px 14px 20px;
+  }
+
+  .admin-dashboard-card svg {
+    width: 30px;
+    height: 30px;
+    margin-bottom: 10px;
+  }
+
+  .admin-dashboard-card span {
+    font-size: 13px;
+  }
+
+  .admin-dashboard-card strong {
+    margin-top: 12px;
+    font-size: 40px;
+  }
+
+  .admin-dashboard-card .btn {
+    min-height: 42px;
+    padding-inline: 8px;
+    font-size: 12px;
+    line-height: 1.15;
+    white-space: normal;
   }
 
   /* Trusted */

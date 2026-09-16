@@ -1,5 +1,5 @@
 export const contentSnapshots = {
-  "generatedAt": "2026-09-16T18:15:21.741Z",
+  "generatedAt": "2026-09-16T18:20:11.184Z",
   "blogPosts": [
     {
       "image": "https://uaurlrsgmenialfgoell.supabase.co/storage/v1/object/public/site-media/posts/tom-jobim-a-genialidade-que-levou-a-bossa-nova-para-o-mundo/image-2026-09-16T15-35-37-305Z.jpg",
