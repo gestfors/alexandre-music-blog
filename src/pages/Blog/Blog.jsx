@@ -163,7 +163,13 @@ export default function Blog() {
               <div className="blog-sidebar-promos">
                 {sidebarPromos.map((promo) => (
                   <Fragment key={promo.title}>
-                    <article className={`blog-sidebar-promo blog-sidebar-promo--${promo.tone}`}>
+                    <a
+                      className={`blog-sidebar-promo blog-sidebar-promo--${promo.tone}`}
+                      href={promo.url}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      aria-label={`Conheça: ${promo.title}`}
+                    >
                       <div
                         className="blog-sidebar-promo__image"
                         style={{ backgroundImage: `url(${promo.image})` }}
@@ -175,7 +181,7 @@ export default function Blog() {
                         <strong>{promo.category}</strong>
                       </div>
                       <h3>{promo.title}</h3>
-                    </article>
+                    </a>
                   </Fragment>
                 ))}
                 {sidebarError && (

@@ -133,12 +133,16 @@ create table if not exists public.sidebar_promos (
   id uuid primary key default gen_random_uuid(),
   category text not null check (char_length(trim(category)) between 1 and 80),
   title text not null check (char_length(trim(title)) between 1 and 180),
+  url text,
   image text not null,
   tone text not null check (tone in ('bass', 'piano', 'guitar')),
   sort_order integer not null default 1 check (sort_order > 0),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+alter table public.sidebar_promos
+add column if not exists url text;
 
 create index if not exists sidebar_promos_sort_order_idx
 on public.sidebar_promos (sort_order asc, created_at asc);

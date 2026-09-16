@@ -11,6 +11,13 @@ export const adminResources = {
     fields: [
       { name: "category", label: "Categoria", type: "text", required: true },
       { name: "title", label: "Título", type: "text", required: true },
+      {
+        name: "url",
+        label: "Link do card",
+        type: "url",
+        required: true,
+        placeholder: "https://...",
+      },
       { name: "image", label: "Imagem", type: "imageUpload", required: true },
       {
         name: "tone",

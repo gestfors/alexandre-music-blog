@@ -5734,7 +5734,6 @@ h3 {
 }
 
 .footer-main {
-  max-width: 1120px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -5785,16 +5784,18 @@ h3 {
   color: #ffffff;
 }
 
-.footer-credit {
+.footer-credit span {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: flex-start;
   gap: 6px;
+  font-family: var(--font-mono);
   color: #f1eee9;
   font-size: 12px;
   line-height: 1.2;
   white-space: nowrap;
 }
+
 
 .footer-credit img {
   width: 80px;
@@ -5842,7 +5843,6 @@ h3 {
 }
 
 .footer-bottom {
-  max-width: 1120px;
   display: flex;
   align-items: center;
   justify-content: space-between;

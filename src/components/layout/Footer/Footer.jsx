@@ -34,7 +34,7 @@ const socialIconMap = {
 export default function Footer() {
   return (
     <footer className="pagefoot" data-od-id="footer" aria-label="Rodape do site Alexandre Ivo">
-      <div className="footer-main content">
+      <div className="container footer-main content">
         <img
           src="/assets/images/Logo_horizontal.png"
           alt="Alexandre Ivo"
@@ -44,14 +44,11 @@ export default function Footer() {
         />
         <div className="footer-contact">
           <strong>Quer falar conosco?</strong>
-          <a href="https://wa.me/5511964932007" target="_blank" rel="noreferrer noopener">
-            <span aria-hidden="true">◉</span> Tel.: (11) 91234-5678
+          <a href="https://wa.me/5511998895254" target="_blank" rel="noreferrer noopener">
+            <span aria-hidden="true">◉</span> Tel.: (11) 99889-5254
           </a>
         </div>
-        <div className="footer-credit">
-          <span>Desenvolvido por:</span>
-          <img src="/assets/images/logo_robson.png" alt="Robson Svicero" width={80} />
-        </div>
+        
         <div className="footer-socials">
           {["facebook", "instagram", "youtube"].map((icon) => {
             const Icon = socialIconMap[icon];
@@ -59,12 +56,16 @@ export default function Footer() {
           })}
         </div>
       </div>
-      <div className="footer-bottom content">
+      <div className="container footer-bottom content">
         <span className="footer-copyright">Copyright © {footerContent.copyright}</span>
         <div className="footer-bottom-links">
           <Link to="/termos-de-uso">Termos de Uso</Link>
           <span aria-hidden="true">|</span>
           <Link to="/politica-de-privacidade">Política de Privacidade</Link>
+        </div>
+        <div className="footer-credit">
+          <span>Desenvolvido por: <img src="/assets/images/logo_robson.png" alt="Robson Svicero" width={80} /></span>
+          
         </div>
       </div>
     </footer>
