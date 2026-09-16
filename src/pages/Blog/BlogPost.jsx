@@ -290,7 +290,7 @@ export default function BlogPost() {
                   ? <RichTextContent>{post.content}</RichTextContent>
                   : post.content
                     ? paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)
-                  : post.sections.map((section) => (
+                    : post.sections.map((section) => (
                       <section key={section.title} className="blog-article-section">
                         <h2>{section.title}</h2>
                         <p>{section.body}</p>
@@ -300,14 +300,15 @@ export default function BlogPost() {
               <BlogShare title={post.title} url={canonicalUrl} />
               {authorProfile && (
                 <aside className="blog-author-card" aria-labelledby="blog-author-name">
-                  <img
-                    src={authorProfile.photo}
-                    alt={`Foto de ${authorProfile.name}`}
-                    loading="lazy"
-                    decoding="async"
-                    width="120"
-                    height="120"
-                  />
+                  <div className="author-avatar">
+                    <img
+                      src={authorProfile.photo}
+                      alt={`Foto de ${authorProfile.name}`}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+
                   <div className="blog-author-card-content">
                     <p className="eyebrow">Publicado por</p>
                     <h2 id="blog-author-name">{authorProfile.name}</h2>
