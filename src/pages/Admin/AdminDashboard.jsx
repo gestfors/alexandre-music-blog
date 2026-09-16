@@ -42,6 +42,19 @@ function slugify(value) {
     .replace(/^-+|-+$/g, "");
 }
 
+function calculateReadingTime(content = "") {
+  const plainText = String(content)
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&[a-z0-9#]+;/gi, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  const wordCount = plainText ? (plainText.match(/[\p{L}\p{N}]+/gu) || []).length : 0;
+  const minutes = Math.max(1, Math.ceil(wordCount / 200));
+
+  return `${minutes} minuto${minutes === 1 ? "" : "s"}`;
+}
+
 function normalizeFormValue(field, value) {
   if (field.type === "date" && value) {
     return String(value).split("T")[0];
@@ -260,6 +273,7 @@ export default function AdminDashboard() {
     for (const field of resource.fields) {
       nextValues[field.name] = normalizeFormValue(field, item[field.name]);
     }
+    nextValues.reading_time = calculateReadingTime(nextValues.content);
     setSelectedId(item.id);
     setFormValues(nextValues);
     setStatus("");
@@ -268,8 +282,8 @@ export default function AdminDashboard() {
 
   function previewPost(item = selectedItem) {
     if (!item?.slug) return;
-    const previewUrl = new URL("/", window.location.origin);
-    previewUrl.searchParams.set("preview", item.slug);
+    const previewUrl = new URL(`/blog/${encodeURIComponent(item.slug)}`, window.location.origin);
+    previewUrl.searchParams.set("preview", "1");
     window.open(previewUrl.href, "_blank", "noopener,noreferrer");
   }
 
@@ -290,6 +304,10 @@ export default function AdminDashboard() {
   function updateField(name, value) {
     setFormValues((current) => {
       const nextValues = { ...current, [name]: value };
+
+      if (activeResource === "posts" && name === "content") {
+        nextValues.reading_time = calculateReadingTime(value);
+      }
 
       if (activeResource === "blogHero" && name === "mode" && value === "single") {
         nextValues.image_2 = "";
@@ -431,6 +449,8 @@ export default function AdminDashboard() {
         payload.instagram_url = `https://www.instagram.com/${handle}/`;
       }
       if (activeResource === "posts") {
+        payload.reading_time = calculateReadingTime(payload.content);
+
         if (!payload.published_at) {
           payload.published_at = new Date().toISOString();
         }
