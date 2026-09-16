@@ -3,10 +3,11 @@ import SEO from "../../components/seo/SEO.jsx";
 import BlogArticleCard from "../../components/BlogArticleCard/BlogArticleCard.jsx";
 import { useSupabaseList } from "../../hooks/useSupabaseContent.js";
 import { Search } from "lucide-react";
-import { Fragment, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 
 export default function Blog() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [heroImageIndex, setHeroImageIndex] = useState(0);
   const { items: posts } = useSupabaseList({
     table: "blog_posts",
     orderBy: "published_at",
@@ -34,6 +35,32 @@ export default function Blog() {
     limit: 6,
     mapper: (promo) => promo,
   });
+  const { items: heroSettings } = useSupabaseList({
+    table: "blog_hero",
+    orderBy: "created_at",
+    ascending: true,
+    select: "id,mode,image_1,image_2,image_3",
+    limit: 1,
+    fallback: [{ mode: "single", image_1: "/assets/images/Banner.png" }],
+    mapper: (hero) => hero,
+  });
+  const hero = heroSettings[0];
+  const heroImages = [hero?.image_1, hero?.image_2, hero?.image_3].filter(Boolean);
+  const isHeroCarousel = hero?.mode === "carousel" && heroImages.length > 1;
+
+  useEffect(() => {
+    setHeroImageIndex(0);
+  }, [hero?.mode, hero?.image_1, hero?.image_2, hero?.image_3]);
+
+  useEffect(() => {
+    if (!isHeroCarousel) return undefined;
+
+    const timer = window.setInterval(() => {
+      setHeroImageIndex((current) => (current + 1) % heroImages.length);
+    }, 5000);
+
+    return () => window.clearInterval(timer);
+  }, [heroImages.length, isHeroCarousel]);
 
   const normalizedSearch = searchTerm.trim().toLowerCase();
 
@@ -62,7 +89,13 @@ export default function Blog() {
         path="/blog"
       />
       <Layout>
-        <section className="blog-hero" aria-labelledby="blog-title">
+        <section
+          className="blog-hero"
+          aria-labelledby="blog-title"
+          style={{
+            backgroundImage: `linear-gradient(90deg, rgba(10, 9, 20, 0.05) 0%, rgba(10, 9, 20, 0.05) 100%), url("${heroImages[heroImageIndex] || "/assets/images/Banner.png"}")`,
+          }}
+        >
           <div className="container blog-hero__inner">
             <div className="blog-hero__content">
               <h1 id="blog-title">BLOG DO ALEXANDRE IVO</h1>

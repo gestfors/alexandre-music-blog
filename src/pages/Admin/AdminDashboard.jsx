@@ -285,6 +285,11 @@ export default function AdminDashboard() {
     setFormValues((current) => {
       const nextValues = { ...current, [name]: value };
 
+      if (activeResource === "blogHero" && name === "mode" && value === "single") {
+        nextValues.image_2 = "";
+        nextValues.image_3 = "";
+      }
+
       const currentSlug = current.slug || "";
       const currentTitleSlug = slugify(current.title || "");
       const shouldUpdateSlug =
@@ -669,7 +674,12 @@ export default function AdminDashboard() {
               </div>
 
               <div className="admin-form-grid">
-                {resource.fields.map((field) => (
+                {resource.fields
+                  .filter((field) => {
+                    if (!field.visibleWhen) return true;
+                    return formValues[field.visibleWhen.field] === field.visibleWhen.equals;
+                  })
+                  .map((field) => (
                   <div className="field" key={field.name}>
                     <label htmlFor={`${activeResource}-${field.name}`}>
                       {field.label}
@@ -778,7 +788,7 @@ export default function AdminDashboard() {
                       />
                     )}
                   </div>
-                ))}
+                  ))}
               </div>
 
               <div className="admin-actions">

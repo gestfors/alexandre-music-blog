@@ -129,6 +129,19 @@ grant execute on function public.register_blog_post_view(text, text) to anon, au
 create index if not exists blog_posts_published_at_idx
 on public.blog_posts (published_at desc);
 
+create table if not exists public.blog_hero (
+  id uuid primary key default gen_random_uuid(),
+  mode text not null default 'single' check (mode in ('single', 'carousel')),
+  image_1 text not null,
+  image_2 text,
+  image_3 text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create unique index if not exists blog_hero_single_config_idx
+on public.blog_hero ((true));
+
 create table if not exists public.sidebar_promos (
   id uuid primary key default gen_random_uuid(),
   category text not null check (char_length(trim(category)) between 1 and 80),
@@ -245,6 +258,11 @@ create trigger blog_posts_set_updated_at
 before update on public.blog_posts
 for each row execute function public.set_updated_at();
 
+drop trigger if exists blog_hero_set_updated_at on public.blog_hero;
+create trigger blog_hero_set_updated_at
+before update on public.blog_hero
+for each row execute function public.set_updated_at();
+
 drop trigger if exists blog_authors_set_updated_at on public.blog_authors;
 create trigger blog_authors_set_updated_at
 before update on public.blog_authors
@@ -256,6 +274,7 @@ before update on public.sidebar_promos
 for each row execute function public.set_updated_at();
 
 alter table public.blog_posts enable row level security;
+alter table public.blog_hero enable row level security;
 alter table public.blog_authors enable row level security;
 alter table public.sidebar_promos enable row level security;
 alter table public.blog_post_views enable row level security;
@@ -291,6 +310,22 @@ create policy "Public can read blog posts"
 on public.blog_posts for select
 to anon
 using (published_at is not null and published_at <= now());
+
+drop policy if exists "Public can read blog hero" on public.blog_hero;
+create policy "Public can read blog hero"
+on public.blog_hero for select
+to anon, authenticated
+using (true);
+
+drop policy if exists "Authenticated users manage blog hero" on public.blog_hero;
+create policy "Authenticated users manage blog hero"
+on public.blog_hero for all
+to authenticated
+using (true)
+with check (true);
+
+grant select on public.blog_hero to anon, authenticated;
+grant insert, update, delete on public.blog_hero to authenticated;
 
 drop policy if exists "Public can read blog authors" on public.blog_authors;
 create policy "Public can read blog authors"

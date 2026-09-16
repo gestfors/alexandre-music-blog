@@ -1,4 +1,36 @@
 export const adminResources = {
+  blogHero: {
+    table: "blog_hero",
+    label: "Hero do blog",
+    singular: "configuração do hero",
+    description: "Escolha uma imagem fixa ou até três imagens para o carrossel do hero.",
+    orderBy: "created_at",
+    ascending: true,
+    titleField: "mode",
+    subtitleField: "image_1",
+    fields: [
+      {
+        name: "mode",
+        label: "Modo de exibição",
+        type: "select",
+        required: true,
+        options: ["single", "carousel"],
+      },
+      { name: "image_1", label: "Imagem principal", type: "imageUpload", required: true },
+      {
+        name: "image_2",
+        label: "Imagem 2 (carrossel)",
+        type: "imageUpload",
+        visibleWhen: { field: "mode", equals: "carousel" },
+      },
+      {
+        name: "image_3",
+        label: "Imagem 3 (carrossel)",
+        type: "imageUpload",
+        visibleWhen: { field: "mode", equals: "carousel" },
+      },
+    ],
+  },
   sidebarPromos: {
     table: "sidebar_promos",
     label: "Cards da sidebar",
