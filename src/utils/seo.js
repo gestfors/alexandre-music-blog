@@ -4,7 +4,7 @@ export const siteSeo = {
   defaultKeywords:
     "música, artistas, lançamentos, entrevistas, cultura musical e notícias",
   baseUrl: "http://localhost:5173",
-  defaultImage: "http://localhost:5173/assets/images/og-image.webp",
+  defaultImage: "http://localhost:5173/assets/images/og_image.jpg",
   defaultTitle: "Alexandre Music Blog | Música, cultura e novidades",
   defaultDescription:
     "Notícias, entrevistas, lançamentos e histórias sobre música.",

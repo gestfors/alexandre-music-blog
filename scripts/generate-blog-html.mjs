@@ -53,7 +53,7 @@ function escapeHtml(str) {
 }
 
 function absoluteUrl(value, siteUrl) {
-  const fallbackImage = `${siteUrl}/assets/images/og-image.webp`;
+  const fallbackImage = `${siteUrl}/assets/images/og_image.jpg`;
   if (!value) return fallbackImage;
 
   try {
