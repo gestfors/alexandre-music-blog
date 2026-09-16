@@ -91,47 +91,23 @@ async function fetchBlogSnapshots(supabase) {
     title: sanitizeSummaryText(row.title, "Artigo", 120),
     excerpt: sanitizeSummaryText(
       row.excerpt,
-      "Artigo sobre estrategia digital, UX, SEO e performance para negocios locais.",
+      "Artigo sobre música, cultura e história musical.",
       260,
     ),
-    category: sanitizeSummaryText(row.category, "Conteudo", 60),
+    category: sanitizeSummaryText(row.category, "Música", 60),
     publishedAt: row.published_at,
     viewsCount: row.views_count ?? 0,
     readingTime: sanitizeSummaryText(row.reading_time, "5 minutos", 20),
   }));
 }
 
-async function fetchProjectSnapshots(supabase) {
-  const { data, error } = await supabase
-    .from("projects")
-    .select("slug,title,published_at,image,thumbnail,alt,badge")
-    .order("published_at", { ascending: false })
-    .limit(6);
-
-  if (error) throw new Error(`Falha ao gerar snapshot de projetos: ${error.message}`);
-
-  return (data || []).map((row) => ({
-    image: sanitizeImageUrl(row.image),
-    thumbnail: sanitizeImageUrl(row.thumbnail) || sanitizeImageUrl(row.image),
-    slug: row.slug,
-    path: `/cases/${row.slug}`,
-    title: row.title,
-    badge: row.badge || null,
-    publishedAt: row.published_at,
-    description: `Projeto ${row.title} com foco em posicionamento digital e conversao.`,
-    metaDescription: `Case ${row.title}: estrategia, design e desenvolvimento orientados a resultado.`,
-    alt: row.alt,
-  }));
-}
-
-function buildSnapshotModule({ blogPosts, projects }) {
+function buildSnapshotModule({ blogPosts }) {
   return [
     "export const contentSnapshots = ",
     JSON.stringify(
       {
         generatedAt: new Date().toISOString(),
         blogPosts,
-        projects,
       },
       null,
       2,
@@ -153,15 +129,12 @@ async function run() {
 
   const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-  const [blogPosts, projects] = await Promise.all([
-    fetchBlogSnapshots(supabase),
-    fetchProjectSnapshots(supabase),
-  ]);
+  const blogPosts = await fetchBlogSnapshots(supabase);
 
-  const moduleContent = buildSnapshotModule({ blogPosts, projects });
+  const moduleContent = buildSnapshotModule({ blogPosts });
   await writeFile(SNAPSHOT_PATH, moduleContent, "utf-8");
 
-  console.log(`[snapshots] Snapshot atualizado: ${blogPosts.length} post(s) e ${projects.length} projeto(s).`);
+  console.log(`[snapshots] Snapshot atualizado: ${blogPosts.length} post(s).`);
 }
 
 run().catch((error) => {

@@ -17,9 +17,6 @@ export default defineConfig({
           if (id.includes("src/pages/Admin")) return "admin";
           if (id.includes("src/components/RichTextEditor")) return "rich-text-editor";
 
-          // Isolate large service pages for lazy loading.
-          if (id.includes("src/pages/Servicos")) return "services";
-
           return undefined;
         },
       },

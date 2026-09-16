@@ -31,9 +31,8 @@ O projeto já possui `vercel.json` com build `npm run build`, saída `dist` e fa
 	- `VITE_SUPABASE_URL`: URL do projeto Supabase.
 	- `VITE_SUPABASE_ANON_KEY`: chave pública `anon`/publishable do Supabase.
 	- `VITE_SITE_URL`: URL canônica do site, sem barra final.
-4. Se a agenda estiver sendo usada, adicione também `VITE_AGENDAVITA_URL`, `VITE_AGENDAVITA_ANON_KEY` e `VITE_AGENDAVITA_ORGANIZATION_SLUG`.
-5. Faça o primeiro deploy. A Vercel executará `npm run build` e publicará `dist`.
-6. Depois de definir o domínio final, atualize `VITE_SITE_URL` e as URLs do Supabase para esse domínio e faça um novo deploy.
+4. Faça o primeiro deploy. A Vercel executará `npm run build` e publicará `dist`.
+5. Depois de definir o domínio final, atualize `VITE_SITE_URL` e as URLs do Supabase para esse domínio e faça um novo deploy.
 
 ### Verificação pós-deploy
 

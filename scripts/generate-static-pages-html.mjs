@@ -1,6 +1,5 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { pathToFileURL } from "node:url";
 
 const PROJECT_ROOT = process.cwd();
 const DIST_PATH = path.join(PROJECT_ROOT, "dist");
@@ -8,22 +7,7 @@ const INDEX_HTML_PATH = path.join(DIST_PATH, "index.html");
 
 const CANONICAL_PATHS = [
   "/",
-  "/criacao-de-sites",
-  "/precos",
-  "/servicos/ux-design",
-  "/servicos/landing-page",
-  "/servicos/seo",
-  "/servicos/gestao-gmn",
-  "/servicos/identidade-visual",
-  "/cases",
-  "/sobre",
-  "/contato",
-  "/diagnostico-claro",
-  "/metodo-claro",
-  "/agendamentos",
-  "/cartao",
-  "/privacidade",
-  "/faq",
+  "/blog",
 ];
 
 function normalizePathname(pathname) {
@@ -55,20 +39,6 @@ function setCanonicalAndOgUrl(html, canonicalUrl) {
   return next;
 }
 
-async function loadSnapshotProjectPaths() {
-  try {
-    const snapshotUrl = `${pathToFileURL(path.join(PROJECT_ROOT, "src", "data", "contentSnapshots.js")).href}?v=${Date.now()}`;
-    const mod = await import(snapshotUrl);
-    const projectPaths = (mod.contentSnapshots?.projects || [])
-      .map((project) => normalizePathname(project.path || `/cases/${project.slug || ""}`))
-      .filter((projectPath) => projectPath.startsWith("/cases/") && projectPath !== "/cases/");
-
-    return projectPaths;
-  } catch {
-    return [];
-  }
-}
-
 async function writeRouteHtml(indexHtml, pathname, siteUrl) {
   const canonicalUrl = toAbsoluteUrl(pathname, siteUrl);
   const routeHtml = setCanonicalAndOgUrl(indexHtml, canonicalUrl);
@@ -96,8 +66,7 @@ async function run() {
     return;
   }
 
-  const snapshotProjectPaths = await loadSnapshotProjectPaths();
-  const allPaths = [...new Set([...CANONICAL_PATHS, ...snapshotProjectPaths])].map(normalizePathname);
+  const allPaths = CANONICAL_PATHS.map(normalizePathname);
 
   for (const pathname of allPaths) {
     await writeRouteHtml(indexHtml, pathname, siteUrl);

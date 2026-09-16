@@ -52,7 +52,7 @@ export default function AdminLogin() {
           <h1 id="admin-login-title">Acesse sua conta</h1>
           <p>
             Entre com o e-mail e senha cadastrados no Supabase para gerenciar
-            artigos do blog e projetos.
+            artigos do blog e seus autores.
           </p>
 
           <form className="admin-form" onSubmit={handleSubmit}>

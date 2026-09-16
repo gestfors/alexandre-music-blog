@@ -117,7 +117,7 @@ export const adminResources = {
         label: "Publicar em (data e hora)",
         type: "datetime-local",
         required: true,
-        help: "Escolha quando o artigo ficará disponível no site. Para publicar imediatamente, informe a data e a hora atuais.",
+        help: "Escolha quando o artigo ficará disponível no blog. Para publicar imediatamente, informe a data e a hora atuais.",
       },
     ],
   },

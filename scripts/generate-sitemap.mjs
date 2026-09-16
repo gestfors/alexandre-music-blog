@@ -8,22 +8,7 @@ const SITEMAP_PATH = path.join(PROJECT_ROOT, "public", "sitemap.xml");
 
 const STATIC_PAGES = [
   { path: "/", changefreq: "monthly", priority: "1.0" },
-  { path: "/criacao-de-sites", changefreq: "monthly", priority: "0.9" },
-  { path: "/precos", changefreq: "monthly", priority: "0.9" },
-  { path: "/servicos/ux-design", changefreq: "monthly", priority: "0.8" },
-  { path: "/servicos/landing-page", changefreq: "monthly", priority: "0.8" },
-  { path: "/servicos/seo", changefreq: "monthly", priority: "0.8" },
-  { path: "/servicos/gestao-gmn", changefreq: "monthly", priority: "0.8" },
-  { path: "/servicos/identidade-visual", changefreq: "monthly", priority: "0.8" },
-  { path: "/cases", changefreq: "monthly", priority: "0.9" },
-  { path: "/sobre", changefreq: "monthly", priority: "0.7" },
-  { path: "/contato", changefreq: "monthly", priority: "0.7" },
-  { path: "/diagnostico-claro", changefreq: "monthly", priority: "0.8" },
-  { path: "/metodo-claro", changefreq: "monthly", priority: "0.8" },
-  { path: "/agendamentos", changefreq: "monthly", priority: "0.8" },
-  { path: "/cartao", changefreq: "monthly", priority: "0.7" },
-  { path: "/privacidade", changefreq: "yearly", priority: "0.3" },
-  { path: "/faq", changefreq: "monthly", priority: "0.6" },
+  { path: "/blog", changefreq: "daily", priority: "0.9" },
 ];
 
 function parseEnvFile(content) {
@@ -170,21 +155,6 @@ async function fetchBlogPosts(supabaseUrl, supabaseAnonKey) {
   return data || [];
 }
 
-async function fetchProjects(supabaseUrl, supabaseAnonKey) {
-  const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-  const { data, error } = await supabase
-    .from("projects")
-    .select("slug,published_at,updated_at")
-    .order("published_at", { ascending: false });
-
-  if (error) {
-    throw new Error(`Falha ao buscar projetos do Supabase: ${error.message}`);
-  }
-
-  return data || [];
-}
-
 async function loadSnapshots() {
   const snapshotUrl = `${pathToFileURL(path.join(PROJECT_ROOT, "src", "data", "contentSnapshots.js")).href}?v=${Date.now()}`;
   const mod = await import(snapshotUrl);
@@ -221,28 +191,6 @@ function buildBlogBlocks(siteOrigin, posts) {
   return blocks;
 }
 
-function buildProjectBlocks(siteOrigin, projects, existingEntries) {
-  const blocks = [];
-
-  for (const project of projects) {
-    if (!project?.slug) continue;
-
-    const pathName = `/cases/${project.slug}`;
-    const fallbackLastmod = existingEntries.get(pathName)?.lastmod;
-
-    blocks.push(
-      createUrlBlock({
-        loc: `${siteOrigin}${pathName}`,
-        lastmod: normalizeDate(project.updated_at || project.published_at || fallbackLastmod),
-        changefreq: "monthly",
-        priority: "0.8",
-      }),
-    );
-  }
-
-  return blocks;
-}
-
 function buildStaticBlocks(siteOrigin, existingEntries) {
   return STATIC_PAGES.map((entry) => {
     const fallbackLastmod = existingEntries.get(entry.path)?.lastmod;
@@ -255,11 +203,11 @@ function buildStaticBlocks(siteOrigin, existingEntries) {
   });
 }
 
-function buildSitemapXml({ xml, staticBlocks, projectBlocks, blogBlocks }) {
+function buildSitemapXml({ xml, staticBlocks, blogBlocks }) {
   const urlsetOpenTag = getUrlsetOpenTag(xml);
   const seen = new Set();
 
-  const canonicalBlocks = [...staticBlocks, ...projectBlocks, ...blogBlocks].filter((block) => {
+  const canonicalBlocks = [...staticBlocks, ...blogBlocks].filter((block) => {
     const loc = extractLoc(block);
     if (!loc || seen.has(loc)) return false;
     seen.add(loc);
@@ -280,23 +228,12 @@ async function run() {
   const existingEntries = buildExistingEntriesMap(rawSitemap);
 
   let posts = [];
-  let projects = [];
 
   if (supabaseUrl && supabaseAnonKey) {
-    const [fetchedPosts, fetchedProjects] = await Promise.all([
-      fetchBlogPosts(supabaseUrl, supabaseAnonKey),
-      fetchProjects(supabaseUrl, supabaseAnonKey),
-    ]);
-    posts = fetchedPosts;
-    projects = fetchedProjects;
+    posts = await fetchBlogPosts(supabaseUrl, supabaseAnonKey);
   } else {
     const snapshots = await loadSnapshots();
     posts = (snapshots.blogPosts || []).map((item) => ({
-      slug: item.slug,
-      published_at: item.publishedAt,
-      updated_at: item.updatedAt,
-    }));
-    projects = (snapshots.projects || []).map((item) => ({
       slug: item.slug,
       published_at: item.publishedAt,
       updated_at: item.updatedAt,
@@ -305,20 +242,17 @@ async function run() {
   }
 
   posts = posts.filter((post) => post?.slug);
-  projects = projects.filter((project) => project?.slug);
 
   const staticBlocks = buildStaticBlocks(siteOrigin, existingEntries);
-  const projectBlocks = buildProjectBlocks(siteOrigin, projects, existingEntries);
   const blogBlocks = buildBlogBlocks(siteOrigin, posts);
   const nextSitemap = buildSitemapXml({
     xml: rawSitemap,
     staticBlocks,
-    projectBlocks,
     blogBlocks,
   });
 
   await writeFile(SITEMAP_PATH, nextSitemap, "utf-8");
-  console.log(`[sitemap] Sitemap atualizado com ${STATIC_PAGES.length} pagina(s) estaticas, ${projects.length} case(s) e ${posts.length} artigo(s) do blog.`);
+  console.log(`[sitemap] Sitemap atualizado com ${STATIC_PAGES.length} pagina(s) estaticas e ${posts.length} artigo(s) do blog.`);
 }
 
 run().catch((error) => {

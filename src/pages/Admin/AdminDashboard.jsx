@@ -5,7 +5,6 @@ import {
   FileText,
   FolderKanban,
   LayoutDashboard,
-  Link as LinkIcon,
   PanelsTopLeft,
   UserRound,
 } from "lucide-react";
@@ -72,43 +71,6 @@ function parsePayload(fields, formValues) {
   return payload;
 }
 
-function createProjectSeoPayload(formValues) {
-  return {
-    seo_title: formValues.title || null,
-    seo_description:
-      formValues.meta_description || formValues.description || formValues.full_description || null,
-  };
-}
-
-function createWhatsAppUrl(phoneValue, messageValue) {
-  const phone = String(phoneValue || "").replace(/\D/g, "");
-  const message = String(messageValue || "").trim();
-
-  if (!phone) return "";
-  return `https://wa.me/${phone}${message ? `?text=${encodeURIComponent(message)}` : ""}`;
-}
-
-function createShortLinkPayload(formValues) {
-  const linkType = formValues.link_type || "url";
-  const phone = String(formValues.whatsapp_phone || "").replace(/\D/g, "");
-
-  if (linkType === "whatsapp") {
-    if (!phone) throw new Error("Informe o WhatsApp com DDI e DDD.");
-    const message = String(formValues.whatsapp_message || "").trim();
-    return {
-      ...formValues,
-      link_type: linkType,
-      whatsapp_phone: phone,
-      destination_url: createWhatsAppUrl(phone, message),
-    };
-  }
-
-  if (!/^https?:\/\//i.test(formValues.destination_url || "")) {
-    throw new Error("Informe uma URL de destino iniciada por http:// ou https://.");
-  }
-  return { ...formValues, link_type: linkType, whatsapp_phone: null, whatsapp_message: null };
-}
-
 function getFileExtension(fileName = "") {
   const extension = fileName.split(".").pop()?.toLowerCase();
   return extension && extension !== fileName ? extension : "webp";
@@ -158,13 +120,6 @@ export default function AdminDashboard() {
 
   const selectedItem = items.find((item) => item.id === selectedId);
   const isPostsResource = activeResource === "posts";
-  const isLinksResource = activeResource === "links";
-  const isWhatsAppLink = isLinksResource && formValues.link_type === "whatsapp";
-  const generatedUrl = isWhatsAppLink
-    ? createWhatsAppUrl(formValues.whatsapp_phone, formValues.whatsapp_message)
-    : isLinksResource && formValues.slug
-      ? `${window.location.origin}/r/${formValues.slug}`
-      : "";
   const sortedPostItems = useMemo(() => {
     if (!isPostsResource) return [];
 
@@ -181,26 +136,6 @@ export default function AdminDashboard() {
       return postSort.ascending ? result : -result;
     });
   }, [isPostsResource, items, postSort]);
-
-  function shouldShowField(fieldName) {
-    if (!isLinksResource) return true;
-    const linkType = formValues.link_type;
-    if (fieldName === "destination_url") return linkType !== "whatsapp";
-    if (["whatsapp_phone", "whatsapp_message"].includes(fieldName)) {
-      return linkType === "whatsapp";
-    }
-    return true;
-  }
-
-  async function copyShortUrl() {
-    if (!generatedUrl) return;
-    try {
-      await navigator.clipboard.writeText(generatedUrl);
-      setStatus(isWhatsAppLink ? "Link do WhatsApp copiado." : "URL encurtada copiada.");
-    } catch (_error) {
-      setStatus("Não foi possível copiar automaticamente. Selecione e copie a URL.");
-    }
-  }
 
   useEffect(() => {
     setSelectedId(null);
@@ -353,7 +288,7 @@ export default function AdminDashboard() {
       const currentSlug = current.slug || "";
       const currentTitleSlug = slugify(current.title || "");
       const shouldUpdateSlug =
-        ["posts", "projects", "links"].includes(activeResource) &&
+        activeResource === "posts" &&
         name === "title" &&
         !selectedId &&
         (!currentSlug || currentSlug === currentTitleSlug);
@@ -463,10 +398,7 @@ export default function AdminDashboard() {
 
     let payload;
     try {
-      const preparedValues = activeResource === "links"
-        ? createShortLinkPayload(formValues)
-        : formValues;
-      payload = parsePayload(resource.fields, preparedValues);
+      payload = parsePayload(resource.fields, formValues);
       if (activeResource === "authors") {
         const handle = String(payload.instagram_handle || "").trim().replace(/^@+/, "");
         if (!/^[a-zA-Z0-9._]{1,30}$/.test(handle)) {
@@ -474,9 +406,6 @@ export default function AdminDashboard() {
         }
         payload.instagram_handle = `@${handle}`;
         payload.instagram_url = `https://www.instagram.com/${handle}/`;
-      }
-      if (activeResource === "projects") {
-        payload = { ...payload, ...createProjectSeoPayload(formValues) };
       }
       if (activeResource === "posts") {
         if (!payload.published_at) {
@@ -547,7 +476,7 @@ export default function AdminDashboard() {
     <>
       <SEO
         title="Painel administrativo | Alexandre Ivo"
-        description="Acesso interno para gerenciar conteúdos do site de criação de sites em São Paulo."
+        description="Acesso interno para gerenciar o conteúdo editorial do blog musical."
         path="/admin"
         robots="noindex, nofollow"
       />
@@ -618,11 +547,9 @@ export default function AdminDashboard() {
                 dashboardStats.map((stat) => {
                   const Icon = stat.key === "posts"
                     ? FileText
-                    : stat.key === "links"
-                      ? LinkIcon
-                      : stat.key === "authors"
-                        ? UserRound
-                        : FolderKanban;
+                    : stat.key === "authors"
+                      ? UserRound
+                      : FolderKanban;
 
                   return (
                     <article className="admin-dashboard-card" key={stat.key}>
@@ -730,7 +657,7 @@ export default function AdminDashboard() {
               </div>
 
               <div className="admin-form-grid">
-                {resource.fields.filter((field) => shouldShowField(field.name)).map((field) => (
+                {resource.fields.map((field) => (
                   <div className="field" key={field.name}>
                     <label htmlFor={`${activeResource}-${field.name}`}>
                       {field.label}
@@ -840,28 +767,6 @@ export default function AdminDashboard() {
                     )}
                   </div>
                 ))}
-                {isLinksResource && generatedUrl && (
-                  <div className="field admin-short-link">
-                    <label htmlFor="links-short-url">
-                      {isWhatsAppLink ? "Link do WhatsApp" : "URL encurtada"}
-                    </label>
-                    <div className="admin-short-link-row">
-                      <input
-                        className="input"
-                        id="links-short-url"
-                        type="url"
-                        value={generatedUrl}
-                        readOnly
-                      />
-                      <Button as="button" variant="secondary" type="button" onClick={copyShortUrl}>
-                        Copiar
-                      </Button>
-                    </div>
-                    {!isWhatsAppLink && !selectedItem && (
-                      <p className="meta">O endereço começará a funcionar depois que o link for salvo.</p>
-                    )}
-                  </div>
-                )}
               </div>
 
               <div className="admin-actions">

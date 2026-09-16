@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { footerContent } from "../../../content/siteContent.js";
 
 function FacebookIcon() {
   return (
@@ -57,7 +56,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="container footer-bottom content">
-        <span className="footer-copyright">Copyright © {footerContent.copyright}</span>
+        <span className="footer-copyright">Copyright © 2026 Alexandre Music Blog</span>
         <div className="footer-bottom-links">
           <Link to="/termos-de-uso">Termos de Uso</Link>
           <span aria-hidden="true">|</span>

@@ -765,6 +765,7 @@ h3 {
 .blog-card-excerpt {
   display: -webkit-box;
   -webkit-box-orient: vertical;
+  line-clamp: 3;
   -webkit-line-clamp: 3;
   overflow: hidden;
   margin: 0;
@@ -1268,7 +1269,7 @@ h3 {
 }
 
 .blog-sidebar-promo--bass::after {
-  background: linear-gradient(135deg, rgba(142, 11, 11, 0.7), rgba(15, 0, 0, 0.35));
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.48));
 }
 
 .blog-sidebar-promo--piano {
@@ -1276,7 +1277,7 @@ h3 {
 }
 
 .blog-sidebar-promo--piano::after {
-  background: linear-gradient(135deg, rgba(16, 0, 69, 0.7), rgba(255, 0, 107, 0.28));
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.48));
 }
 
 .blog-sidebar-promo--guitar {
@@ -1284,7 +1285,7 @@ h3 {
 }
 
 .blog-sidebar-promo--guitar::after {
-  background: linear-gradient(135deg, rgba(60, 0, 35, 0.75), rgba(255, 0, 94, 0.3));
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.48));
 }
 
 .blog-sidebar-promo__category {
@@ -1302,33 +1303,29 @@ h3 {
 
 .blog-sidebar-promo__category small {
   padding: 0 14px 4px;
-  color: #ff3b8b;
+  color: var(--bg);
   font-size: 10px;
   font-weight: 900;
 }
 
 .blog-sidebar-promo__category strong {
   padding: 7px 14px 8px;
-  background: #ff157e;
+  background: var(--danger);
   font-size: 16px;
   font-weight: 900;
 }
 
-.blog-sidebar-promo--bass .blog-sidebar-promo__category strong {
-  background: #e83535;
-}
-
 .blog-sidebar-promo h3 {
   position: absolute;
-  right: 14px;
-  bottom: 28px;
-  left: 14px;
+  right: 0;
+  top: 50%;
+  left: 0;
   margin: 0;
   color: #fff;
   font-family: var(--font-body);
   font-size: clamp(22px, 2vw, 31px);
-  font-weight: 900;
-  line-height: 0.98;
+  font-weight: 800;
+  letter-spacing: 0.15em;
   text-align: center;
   text-transform: uppercase;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.42);

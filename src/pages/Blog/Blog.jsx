@@ -86,14 +86,6 @@ export default function Blog() {
                 GARANTA JÁ A SUA
               </a>
             </div>
-
-            {/* <div className="blog-featured-banner__visual" aria-hidden="true">
-              <div className="blog-featured-banner__sheet">
-                <span>PARTITURAS</span>
-                <span>DE NATAL</span>
-                <small>ALEXANDRE IVO</small>
-              </div>
-            </div> */}
           </div>
         </section>
 

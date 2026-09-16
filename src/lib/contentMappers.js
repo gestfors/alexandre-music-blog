@@ -20,23 +20,3 @@ export function mapBlogPost(row) {
     sections: row.sections || [],
   };
 }
-
-export function mapProject(row) {
-  return {
-    slug: row.slug,
-    path: `/cases/${row.slug}`,
-    title: row.title,
-    badge: row.badge || row.type || "Site",
-    publishedAt: row.published_at,
-    description: row.description,
-    fullDescription: row.full_description,
-    metaDescription: row.meta_description,
-    seoTitle: row.seo_title || row.title,
-    seoDescription: row.seo_description || row.meta_description || row.description,
-    image: row.image,
-    thumbnail: row.thumbnail || null,
-    galleryImages: [row.image_2, row.image_3, row.image_4, row.image_5].filter(Boolean),
-    alt: row.alt,
-    externalUrl: row.external_url,
-  };
-}
