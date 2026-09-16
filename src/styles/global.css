@@ -2614,6 +2614,30 @@ h3 {
   background: var(--bg);
 }
 
+.admin-sidebar-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.admin-menu-toggle {
+  display: none;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--fg);
+}
+
+.admin-menu-toggle svg {
+  width: 22px;
+  height: 22px;
+}
+
 .admin-sidebar h1 {
   font-size: var(--page-h1-size);
 }
@@ -6429,6 +6453,40 @@ h3 {
   .admin-sidebar {
     position: static;
     height: auto;
+    gap: var(--space-4);
+    padding: var(--space-4) var(--container-gutter-tablet);
+    border-right: 0;
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .admin-sidebar-head {
+    align-items: center;
+  }
+
+  .admin-sidebar-head .eyebrow {
+    margin-bottom: 2px;
+  }
+
+  .admin-sidebar-head h1 {
+    font-size: 28px;
+  }
+
+  .admin-menu-toggle {
+    display: grid;
+  }
+
+  .admin-tabs,
+  .admin-sidebar > .btn {
+    display: none;
+  }
+
+  .admin-sidebar.is-open .admin-tabs,
+  .admin-sidebar.is-open > .btn {
+    display: grid;
+  }
+
+  .admin-sidebar.is-open > .btn {
+    width: 100%;
   }
 
   .admin-grid {
@@ -6436,7 +6494,7 @@ h3 {
   }
 
   .admin-dashboard-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(1, minmax(0, 1fr));
     gap: 16px;
   }
 

@@ -5,7 +5,9 @@ import {
   FileText,
   FolderKanban,
   LayoutDashboard,
+  Menu,
   PanelsTopLeft,
+  X,
   UserRound,
 } from "lucide-react";
 import RichTextEditor from "../../components/RichTextEditor/RichTextEditor.jsx";
@@ -20,6 +22,9 @@ const mediaBucket = "site-media";
 const resourceKeys = Object.keys(adminResources);
 const adminNavigation = [
   { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+  ...(adminResources.blogHero
+    ? [{ key: "blogHero", label: adminResources.blogHero.label, icon: PanelsTopLeft }]
+    : []),
   ...(adminResources.sidebarPromos
     ? [{ key: "sidebarPromos", label: adminResources.sidebarPromos.label, icon: PanelsTopLeft }]
     : []),
@@ -117,6 +122,7 @@ export default function AdminDashboard() {
   const [relationOptions, setRelationOptions] = useState({});
   const [postScreen, setPostScreen] = useState("list");
   const [postSort, setPostSort] = useState({ key: "published_at", ascending: false });
+  const [isAdminMenuOpen, setIsAdminMenuOpen] = useState(false);
 
   const selectedItem = items.find((item) => item.id === selectedId);
   const isPostsResource = activeResource === "posts";
@@ -498,18 +504,33 @@ export default function AdminDashboard() {
         robots="noindex, nofollow"
       />
       <main className="admin-shell">
-        <aside className="admin-sidebar" aria-label="Navegação administrativa">
-          <div>
+        <aside className={`admin-sidebar ${isAdminMenuOpen ? "is-open" : ""}`} aria-label="Navegação administrativa">
+          <div className="admin-sidebar-head">
+            <div>
             <p className="eyebrow">Admin</p>
             <h1>Painel</h1>
+            </div>
+            <button
+              className="admin-menu-toggle"
+              type="button"
+              aria-expanded={isAdminMenuOpen}
+              aria-controls="admin-navigation"
+              aria-label={isAdminMenuOpen ? "Fechar menu" : "Abrir menu"}
+              onClick={() => setIsAdminMenuOpen((current) => !current)}
+            >
+              {isAdminMenuOpen ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
+            </button>
           </div>
-          <nav className="admin-tabs">
+          <nav className="admin-tabs" id="admin-navigation">
             {adminNavigation.map(({ key, label, icon: Icon }) => (
               <button
                 className={key === activeResource ? "is-active" : ""}
                 key={key}
                 type="button"
-                onClick={() => setActiveResource(key)}
+                onClick={() => {
+                  setActiveResource(key);
+                  setIsAdminMenuOpen(false);
+                }}
               >
                 <Icon aria-hidden="true" />
                 <span>{label}</span>

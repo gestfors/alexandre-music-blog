@@ -2,7 +2,7 @@ export const adminResources = {
   blogHero: {
     table: "blog_hero",
     label: "Hero do blog",
-    singular: "configuração do hero",
+    singular: "imagens do Hero",
     description: "Escolha uma imagem fixa ou até três imagens para o carrossel do hero.",
     orderBy: "created_at",
     ascending: true,
