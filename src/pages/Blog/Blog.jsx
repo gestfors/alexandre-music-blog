@@ -3,9 +3,10 @@ import SEO from "../../components/seo/SEO.jsx";
 import BlogArticleCard from "../../components/BlogArticleCard/BlogArticleCard.jsx";
 import { useSupabaseList } from "../../hooks/useSupabaseContent.js";
 import { Search } from "lucide-react";
-import { Fragment } from "react";
+import { Fragment, useMemo, useState } from "react";
 
 export default function Blog() {
+  const [searchTerm, setSearchTerm] = useState("");
   const { items: posts } = useSupabaseList({
     table: "blog_posts",
     orderBy: "published_at",
@@ -34,7 +35,24 @@ export default function Blog() {
     mapper: (promo) => promo,
   });
 
-  const displayPosts = Array.isArray(posts) ? posts.slice(0, 6) : [];
+  const normalizedSearch = searchTerm.trim().toLowerCase();
+
+  const displayPosts = useMemo(() => {
+    if (!Array.isArray(posts)) return [];
+
+    const visiblePosts = normalizedSearch
+      ? posts.filter((post) => {
+          const searchableText = [post.title, post.excerpt, post.category, post.slug]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+
+          return searchableText.includes(normalizedSearch);
+        })
+      : posts;
+
+    return visiblePosts.slice(0, 6);
+  }, [normalizedSearch, posts]);
 
   return (
     <>
@@ -91,6 +109,14 @@ export default function Blog() {
                   displayPosts.map((post) => (
                     <BlogArticleCard key={post.slug} post={post} className="blog-card--compact" />
                   ))
+                ) : normalizedSearch ? (
+                  <article className="blog-card placeholder-card" style={{ gridColumn: "1 / -1" }}>
+                    <div className="blog-card-body">
+                      <p className="blog-card-excerpt" style={{ display: "block", WebkitLineClamp: "unset", overflow: "visible" }}>
+                        Nenhum artigo encontrado para “{searchTerm}”.
+                      </p>
+                    </div>
+                  </article>
                 ) : (
                   Array.from({ length: 4 }).map((_, index) => (
                     <article className="blog-card placeholder-card" key={`empty-${index}`}>
@@ -107,9 +133,23 @@ export default function Blog() {
             </div>
 
             <aside className="blog-sidebar" aria-label="Conteúdo em destaque">
-              <form className="blog-sidebar-search" role="search">
-                <label htmlFor="blog-sidebar-query">Buscar...</label>
-                <input id="blog-sidebar-query" name="query" type="search" aria-label="Buscar artigos" />
+              <form
+                className="blog-sidebar-search"
+                role="search"
+                onSubmit={(event) => event.preventDefault()}
+              >
+                <label htmlFor="blog-sidebar-query" className="visually-hidden">
+                  Buscar artigos
+                </label>
+                <input
+                  id="blog-sidebar-query"
+                  name="query"
+                  type="search"
+                  aria-label="Buscar artigos"
+                  value={searchTerm}
+                  onChange={(event) => setSearchTerm(event.target.value)}
+                  placeholder="Buscar artigos"
+                />
                 <button type="submit" aria-label="Buscar">
                   <Search aria-hidden="true" />
                 </button>

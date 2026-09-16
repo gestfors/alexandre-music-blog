@@ -322,6 +322,7 @@ h3 {
 .btn-secondary:hover {
   border-color: var(--meta);
   background: color-mix(in oklab, var(--surface-warm) 82%, #ffffff);
+  transform: scale(1.1);
 }
 
 .btn-dark {
@@ -762,11 +763,16 @@ h3 {
 }
 
 .blog-card-excerpt {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
   margin: 0;
   color: var(--muted);
-  font-size: var(--text-base);
+  font-size: var(--text-sm);
   font-style: italic;
   line-height: 1.7;
+  text-overflow: ellipsis;
 }
 
 .blog-card-featured {
@@ -858,7 +864,7 @@ h3 {
 .blog-card--compact .blog-card-title {
   color: #2f2f2f;
   font-family: var(--font-body);
-  font-size: clamp(20px, 2vw, 27px);
+  font-size: clamp(20px, 2vw, 24px);
   font-weight: 500;
   line-height: 1.18;
 }
@@ -866,7 +872,7 @@ h3 {
 .blog-card--compact .blog-card-excerpt {
   color: #808080;
   font-family: var(--font-body);
-  font-size: clamp(14px, 1.35vw, 18px);
+  font-size: clamp(14px, 1.35vw, 16px);
   font-style: normal;
   line-height: 1.35;
 }
@@ -896,7 +902,7 @@ h3 {
   display: flex;
   align-items: center;
   background-image:
-    linear-gradient(90deg, rgba(12, 18, 40, 0.78) 0%, rgba(58, 17, 66, 0.62) 34%, rgba(174, 37, 66, 0.4) 100%),
+    linear-gradient(90deg, rgba(10, 9, 20, 0.05) 0%, rgba(10, 9, 20, 0.05) 100%),
     url("/assets/images/Banner.png");
   background-repeat: no-repeat;
   background-position: center center;
@@ -930,10 +936,9 @@ h3 {
 .blog-hero__content h1 {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(2.8rem, 5vw, 6.3rem);
-  font-weight: 700;
+  font-size: clamp(2.8rem, 5vw, 4.3rem);
+  font-weight: 600;
   line-height: 0.96;
-  letter-spacing: -0.04em;
   text-transform: uppercase;
   color: #f8f3ef;
 }
@@ -942,10 +947,10 @@ h3 {
   margin: 24px auto 0;
   max-width: 830px;
   font-family: var(--font-body);
-  font-size: clamp(1.1rem, 1.7vw, 1.7rem);
+  font-size: clamp(1rem, 1.7vw, 1.5rem);
   line-height: 1.45;
   color: rgba(255, 255, 255, 0.88);
-  font-weight: 400;
+  font-weight: 300;
 }
 
 .blog-featured-banner {
@@ -2694,33 +2699,34 @@ h3 {
 
 .admin-dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-6);
 }
 
 .admin-dashboard-card {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: var(--space-4);
   padding: var(--space-6);
-  border: 1px solid var(--border-soft);
+  border: 1px solid var(--fg);
   border-radius: var(--radius-lg);
-  background: var(--bg);
+  background: var(--fg-2);
 }
 
 .admin-dashboard-card svg {
   width: 36px;
   height: 36px;
-  color: var(--accent);
+  color: var(--bg);
   stroke-width: 1.8;
 }
 
 .admin-dashboard-card span {
-  color: var(--muted);
+  color: var(--bg);
   font-size: var(--text-sm);
 }
 
 .admin-dashboard-card strong {
-  color: var(--fg);
+  color: var(--bg);
   font-family: var(--font-display);
   font-size: var(--text-3xl);
   line-height: 1;
@@ -4654,7 +4660,7 @@ h3 {
   border-radius: 14px;
   background: var(--fg);
   color: var(--bg);
-  font-family: var(--font-logo);
+  font-family: var(--font-mono);
   font-size: var(--text-xl);
   line-height: 1;
 }
