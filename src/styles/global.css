@@ -5380,6 +5380,30 @@ h3 {
   margin: 0;
 }
 
+.blog-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.blog-back-link:hover {
+  color: var(--accent-hover);
+}
+
+.blog-back-link svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  stroke-width: 2.2;
+}
+
 .blog-post-category {
   display: inline-flex;
   align-items: center;

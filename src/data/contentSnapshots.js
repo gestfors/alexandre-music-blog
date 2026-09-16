@@ -1,6 +1,18 @@
 export const contentSnapshots = {
-  "generatedAt": "2026-09-16T20:16:25.818Z",
+  "generatedAt": "2026-09-16T23:49:03.688Z",
   "blogPosts": [
+    {
+      "image": "https://uaurlrsgmenialfgoell.supabase.co/storage/v1/object/public/site-media/posts/johann-christoph-friedrich-bach-a-historia-do-bach-de-buckeburg/image-2026-09-16T21-47-05-417Z.jpg",
+      "thumbnail": "https://uaurlrsgmenialfgoell.supabase.co/storage/v1/object/public/site-media/posts/johann-christoph-friedrich-bach-a-historia-do-bach-de-buckeburg/thumbnail-2026-09-16T21-47-00-250Z.jpg",
+      "slug": "johann-christoph-friedrich-bach-a-historia-do-bach-de-buckeburg",
+      "path": "/blog/johann-christoph-friedrich-bach-a-historia-do-bach-de-buckeburg",
+      "title": "Johann Christoph Friedrich Bach: a história do “Bach de Bückeburg”",
+      "excerpt": "Conheça Johann Christoph Friedrich Bach, o “Bach de Bückeburg”, sua trajetória na corte, suas principais obras e o legado da família Bach.",
+      "category": "Música VI",
+      "publishedAt": "2026-09-16T21:50:00+00:00",
+      "viewsCount": 2,
+      "readingTime": "5 minutos"
+    },
     {
       "image": "https://uaurlrsgmenialfgoell.supabase.co/storage/v1/object/public/site-media/posts/tom-jobim-a-genialidade-que-levou-a-bossa-nova-para-o-mundo/image-2026-09-16T15-35-37-305Z.jpg",
       "thumbnail": "https://uaurlrsgmenialfgoell.supabase.co/storage/v1/object/public/site-media/posts/tom-jobim-a-genialidade-que-levou-a-bossa-nova-para-o-mundo/thumbnail-2026-09-16T15-35-30-099Z.jpg",
@@ -10,31 +22,7 @@ export const contentSnapshots = {
       "excerpt": "Conheça a trajetória de Tom Jobim, sua importância para a Bossa Nova, suas principais influências e o legado que levou a música brasileira ao mundo.",
       "category": "Música IV",
       "publishedAt": "2026-09-16T15:38:00+00:00",
-      "viewsCount": 1,
-      "readingTime": "5 minutos"
-    },
-    {
-      "image": "https://uaurlrsgmenialfgoell.supabase.co/storage/v1/object/public/site-media/posts/teste2/image-2026-09-16T01-22-32-693Z.webp",
-      "thumbnail": "https://uaurlrsgmenialfgoell.supabase.co/storage/v1/object/public/site-media/posts/teste2/thumbnail-2026-09-16T01-22-25-485Z.webp",
-      "slug": "teste2",
-      "path": "/blog/teste2",
-      "title": "Teste2",
-      "excerpt": "Resumo",
-      "category": "Música V",
-      "publishedAt": "2026-09-16T01:23:00+00:00",
-      "viewsCount": 1,
-      "readingTime": "8 minutos"
-    },
-    {
-      "image": "https://uaurlrsgmenialfgoell.supabase.co/storage/v1/object/public/site-media/posts/teste/image-2026-09-15T23-11-20-679Z.webp",
-      "thumbnail": "https://uaurlrsgmenialfgoell.supabase.co/storage/v1/object/public/site-media/posts/teste/thumbnail-2026-09-15T23-11-14-692Z.webp",
-      "slug": "teste",
-      "path": "/blog/teste",
-      "title": "Teste",
-      "excerpt": "alksfçlasdlkansd",
-      "category": "Música II",
-      "publishedAt": "2026-09-15T23:11:00+00:00",
-      "viewsCount": 1,
+      "viewsCount": 3,
       "readingTime": "5 minutos"
     }
   ]

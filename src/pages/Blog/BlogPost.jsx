@@ -1,6 +1,6 @@
-import { CalendarDays, Clock, Eye, UserRound } from "lucide-react";
+import { ArrowLeft, CalendarDays, Clock, Eye, UserRound } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import BlogComments from "../../components/BlogComments/BlogComments.jsx";
 import BlogShare from "../../components/BlogShare/BlogShare.jsx";
 import Layout from "../../components/layout/Layout/Layout.jsx";
@@ -239,6 +239,10 @@ export default function BlogPost() {
         <article className="blog-article" aria-labelledby="post-title">
           <header className="blog-post-header">
             <div className="container blog-post-header-content">
+              <Link className="blog-back-link" to="/blog">
+                <ArrowLeft aria-hidden="true" />
+                <span>Voltar para o blog</span>
+              </Link>
               <span className="blog-post-category">{post.category}</span>
               <h1 id="post-title">{post.title}</h1>
               <p className="blog-post-meta">
