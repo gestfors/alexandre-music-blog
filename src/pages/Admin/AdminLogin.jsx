@@ -41,7 +41,7 @@ export default function AdminLogin() {
   return (
     <>
       <SEO
-        title="Login administrativo | Alexandre Ivo"
+        title="Login administrativo "
         description="Acesso interno ao painel de conteúdo do site."
         path="/admin/login"
         robots="noindex, nofollow"
