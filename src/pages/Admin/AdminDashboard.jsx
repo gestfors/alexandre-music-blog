@@ -518,7 +518,7 @@ export default function AdminDashboard() {
   return (
     <>
       <SEO
-        title="Painel administrativo | Alexandre Ivo"
+        title="Painel administrativo "
         description="Acesso interno para gerenciar o conteúdo editorial do blog musical."
         path="/admin"
         robots="noindex, nofollow"
