@@ -2679,6 +2679,13 @@ h3 {
   display: grid;
   place-items: center;
   padding: var(--space-6);
+  background: var(--fg);
+}
+
+.admin-auth img {
+  width: 380px;
+  height: auto;
+  margin-bottom: var(--space-12);
 }
 
 .admin-auth-card {
