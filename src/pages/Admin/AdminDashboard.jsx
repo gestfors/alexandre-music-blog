@@ -10,6 +10,7 @@ import {
   X,
   UserRound,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import RichTextEditor from "../../components/RichTextEditor/RichTextEditor.jsx";
 import Button from "../../components/ui/Button/Button.jsx";
 import SEO from "../../components/seo/SEO.jsx";
@@ -118,6 +119,7 @@ function getPostStatus(value) {
 }
 
 export default function AdminDashboard() {
+  const navigate = useNavigate();
   const [activeResource, setActiveResource] = useState("dashboard");
   const resource = adminResources[activeResource] || null;
   const emptyRecord = useMemo(
@@ -513,6 +515,7 @@ export default function AdminDashboard() {
 
   async function handleLogout() {
     await supabase.auth.signOut();
+    navigate("/");
   }
 
   return (
