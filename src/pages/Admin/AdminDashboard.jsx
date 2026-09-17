@@ -515,7 +515,7 @@ export default function AdminDashboard() {
 
   async function handleLogout() {
     await supabase.auth.signOut();
-    navigate("/");
+    navigate("/blog", { replace: true });
   }
 
   return (

@@ -47,7 +47,7 @@ export default function AdminLogin() {
         robots="noindex, nofollow"
       />
       <main className="admin-auth">
-        <img src="/public/assets/images/Logo_horizontal.png" alt="" />
+        <img src="/assets/images/Logo_horizontal.png" alt="" />
         <section className="admin-auth-card" aria-labelledby="admin-login-title">
           <p className="eyebrow">Painel administrativo</p>
           <h1 id="admin-login-title">Acesse sua conta</h1>

@@ -1,5 +1,5 @@
 export const contentSnapshots = {
-  "generatedAt": "2026-09-17T21:40:36.079Z",
+  "generatedAt": "2026-09-17T22:03:27.653Z",
   "blogPosts": [
     {
       "image": "https://uaurlrsgmenialfgoell.supabase.co/storage/v1/object/public/site-media/posts/johann-christoph-friedrich-bach-a-historia-do-bach-de-buckeburg/image-2026-09-16T21-47-05-417Z.jpg",
