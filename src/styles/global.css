@@ -2685,7 +2685,7 @@ h3 {
 .admin-auth img {
   width: 380px;
   height: auto;
-  margin-bottom: var(--space-12);
+  margin-bottom: var(--space-8);
 }
 
 .admin-auth-card {
