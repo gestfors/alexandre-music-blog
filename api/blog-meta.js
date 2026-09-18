@@ -9,6 +9,7 @@ function escapeHtml(value = "") {
 
 function absoluteUrl(value, siteUrl) {
   if (!value) return `${siteUrl}/assets/images/og_image.jpg`;
+  if (/^https?:\/\//i.test(value)) return value;
 
   try {
     return new URL(value, `${siteUrl}/`).href;
@@ -71,7 +72,7 @@ async function fetchPost(slug) {
 
 export default async function handler(request, response) {
   const requestOrigin = `${request.headers["x-forwarded-proto"] || "https"}://${request.headers.host}`;
-  const siteUrl = (process.env.VITE_SITE_URL || requestOrigin).replace(/\/$/, "");
+  const siteUrl = normalizeSiteUrl(process.env.VITE_SITE_URL || requestOrigin);
   const slug = String(request.query?.slug || "").replace(/^\/+|\/+$/g, "").split("/")[0];
 
   let shell;
@@ -114,4 +115,10 @@ export default async function handler(request, response) {
     response.setHeader("Content-Type", "text/html; charset=utf-8");
     response.end("<!doctype html><html lang=\"pt-BR\"><head><meta charset=\"utf-8\"><title>Alexandre Music Blog</title></head><body></body></html>");
   }
+}
+
+function normalizeSiteUrl(value) {
+  const normalized = String(value || "").trim().replace(/\/$/, "");
+  if (!normalized) return "";
+  return /^https?:\/\//i.test(normalized) ? normalized : `https://${normalized}`;
 }
