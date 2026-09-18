@@ -197,13 +197,14 @@ export default function BlogPost() {
   const introParagraphs = getIntroParagraphs(post.intro);
   const canonicalUrl = post.canonicalUrl || absoluteUrl(post.path);
   const authorName = authorProfile?.name || post.author || "Alexandre Ivo";
+  const socialImage = post.thumbnail || post.image;
   const hasRichContent = hasHtmlContent(post.content);
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: post.title,
     description: post.seoDescription || post.excerpt,
-    image: post.image || post.thumbnail,
+    image: socialImage,
     author: {
       "@type": "Person",
       name: authorName,
@@ -231,7 +232,7 @@ export default function BlogPost() {
         description={post.seoDescription || post.excerpt}
         path={post.path}
         canonical={canonicalUrl}
-        image={post.image || post.thumbnail}
+        image={socialImage}
         type="article"
         structuredData={structuredData}
       />

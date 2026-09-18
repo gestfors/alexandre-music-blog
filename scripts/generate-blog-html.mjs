@@ -1,6 +1,5 @@
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import path from "node:path";
-import { createClient } from "@supabase/supabase-js";
 
 const PROJECT_ROOT = process.cwd();
 const DIST_PATH = path.join(PROJECT_ROOT, "dist");
@@ -42,27 +41,6 @@ async function loadDotEnvFiles() {
   }
 }
 
-function escapeHtml(str) {
-  if (!str) return "";
-  return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-
-function absoluteUrl(value, siteUrl) {
-  const fallbackImage = `${siteUrl}/assets/images/og_image.jpg`;
-  if (!value) return fallbackImage;
-
-  try {
-    return new URL(value, `${siteUrl}/`).href;
-  } catch {
-    return fallbackImage;
-  }
-}
-
 function createSocialHtml(indexHtml, { title, description, image, url, type = "website" }) {
   let html = indexHtml;
 
@@ -94,19 +72,6 @@ function createSocialHtml(indexHtml, { title, description, image, url, type = "w
   return html.replace("</head>", `${metaTags}\n</head>`);
 }
 
-async function fetchBlogPosts(supabaseUrl, supabaseAnonKey) {
-  const supabase = createClient(supabaseUrl, supabaseAnonKey);
-  const { data, error } = await supabase
-    .from("blog_posts")
-    .select("slug, title, excerpt, seo_title, seo_description, image, thumbnail, canonical_url")
-    .order("published_at", { ascending: false });
-
-  if (error) {
-    throw new Error(`Falha ao buscar posts do Supabase: ${error.message}`);
-  }
-  return data || [];
-}
-
 async function generateBlogHtmls() {
   await loadDotEnvFiles();
 
@@ -130,11 +95,8 @@ async function generateBlogHtmls() {
     return;
   }
 
-  const posts = await fetchBlogPosts(supabaseUrl, supabaseAnonKey);
-
-  // A pasta /blog passa a existir quando os HTMLs dos posts sao gerados. Sem
-  // um index.html nela, o LiteSpeed bloqueia a listagem do diretorio com 403 e
-  // nao chega ao fallback da SPA definido no .htaccess.
+  // A página individual é servida pela função /api/blog-meta, que consulta o
+  // Supabase em cada acesso e injeta os metadados atuais do artigo.
   const blogDirPath = path.join(DIST_PATH, "blog");
   await mkdir(blogDirPath, { recursive: true });
   const blogHtml = createSocialHtml(indexHtml, {
@@ -144,33 +106,7 @@ async function generateBlogHtmls() {
     url: `${siteUrl}/blog/`,
   });
   await writeFile(path.join(blogDirPath, "index.html"), blogHtml, "utf-8");
-
-  for (const post of posts) {
-    if (!post.slug) continue;
-
-    const title = escapeHtml(post.seo_title || post.title || "Artigo | Alexandre Ivo");
-    const description = escapeHtml(
-      post.seo_description || post.excerpt || "Artigo publicado por Alexandre Ivo.",
-    );
-    const image = escapeHtml(absoluteUrl(post.image || post.thumbnail, siteUrl));
-    const url = escapeHtml(post.canonical_url || `${siteUrl}/blog/${post.slug}`);
-
-    const postHtml = createSocialHtml(indexHtml, {
-      title,
-      description,
-      image,
-      url,
-      type: "article",
-    });
-
-    const dirPath = path.join(DIST_PATH, "blog", post.slug);
-    await mkdir(dirPath, { recursive: true });
-
-    const filePath = path.join(dirPath, "index.html");
-    await writeFile(filePath, postHtml, "utf-8");
-  }
-
-  console.log(`[blog-html] Foram gerados ${posts.length} arquivos HTML estaticos para o blog.`);
+  console.log("[blog-html] HTML estatico gerado para a listagem do blog.");
 }
 
 generateBlogHtmls().catch((error) => {

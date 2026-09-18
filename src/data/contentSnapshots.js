@@ -1,6 +1,18 @@
 export const contentSnapshots = {
-  "generatedAt": "2026-09-18T12:22:08.662Z",
+  "generatedAt": "2026-09-18T13:11:48.312Z",
   "blogPosts": [
+    {
+      "image": "https://uaurlrsgmenialfgoell.supabase.co/storage/v1/object/public/site-media/posts/jimi-hendrix-historia-carreira-e-importancia-para-a-musica/image-2026-09-18T12-44-35-642Z.jpg",
+      "thumbnail": "https://uaurlrsgmenialfgoell.supabase.co/storage/v1/object/public/site-media/posts/jimi-hendrix-historia-carreira-e-importancia-para-a-musica/thumbnail-2026-09-18T12-44-30-420Z.jpg",
+      "slug": "jimi-hendrix-historia-carreira-e-importancia-para-a-musica",
+      "path": "/blog/jimi-hendrix-historia-carreira-e-importancia-para-a-musica",
+      "title": "Jimi Hendrix: história, carreira e importância para a música",
+      "excerpt": "Conheça a história de Jimi Hendrix, sua carreira, principais discos e o impacto que o guitarrista teve no rock, no blues e na música.",
+      "category": "Música",
+      "publishedAt": "2026-09-18T12:50:00+00:00",
+      "viewsCount": 2,
+      "readingTime": "8 minutos"
+    },
     {
       "image": "https://uaurlrsgmenialfgoell.supabase.co/storage/v1/object/public/site-media/posts/johann-christoph-friedrich-bach-a-historia-do-bach-de-buckeburg/image-2026-09-16T21-47-05-417Z.jpg",
       "thumbnail": "https://uaurlrsgmenialfgoell.supabase.co/storage/v1/object/public/site-media/posts/johann-christoph-friedrich-bach-a-historia-do-bach-de-buckeburg/thumbnail-2026-09-16T21-47-00-250Z.jpg",
