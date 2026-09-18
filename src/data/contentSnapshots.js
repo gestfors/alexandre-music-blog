@@ -1,5 +1,5 @@
 export const contentSnapshots = {
-  "generatedAt": "2026-09-18T13:11:48.312Z",
+  "generatedAt": "2026-09-18T13:32:56.660Z",
   "blogPosts": [
     {
       "image": "https://uaurlrsgmenialfgoell.supabase.co/storage/v1/object/public/site-media/posts/jimi-hendrix-historia-carreira-e-importancia-para-a-musica/image-2026-09-18T12-44-35-642Z.jpg",
@@ -10,7 +10,7 @@ export const contentSnapshots = {
       "excerpt": "Conheça a história de Jimi Hendrix, sua carreira, principais discos e o impacto que o guitarrista teve no rock, no blues e na música.",
       "category": "Música",
       "publishedAt": "2026-09-18T12:50:00+00:00",
-      "viewsCount": 2,
+      "viewsCount": 3,
       "readingTime": "8 minutos"
     },
     {

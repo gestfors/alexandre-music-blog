@@ -50,38 +50,52 @@ async function fetchPost(slug) {
   const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
   if (!supabaseUrl || !supabaseKey || !slug) return null;
 
-  const endpoint = new URL(`${supabaseUrl.replace(/\/$/, "")}/rest/v1/blog_posts`);
-  endpoint.searchParams.set("select", "title,excerpt,seo_title,seo_description,image,thumbnail,canonical_url,slug");
-  endpoint.searchParams.set("slug", `eq.${slug}`);
-  endpoint.searchParams.set("limit", "1");
+  try {
+    const endpoint = new URL(`${supabaseUrl.replace(/\/$/, "")}/rest/v1/blog_posts`);
+    endpoint.searchParams.set("select", "title,excerpt,seo_title,seo_description,image,thumbnail,canonical_url,slug");
+    endpoint.searchParams.set("slug", `eq.${slug}`);
+    endpoint.searchParams.set("limit", "1");
 
-  const response = await fetch(endpoint, {
-    headers: { apikey: supabaseKey, Authorization: `Bearer ${supabaseKey}` },
-  });
-  if (!response.ok) return null;
+    const response = await fetch(endpoint, {
+      headers: { apikey: supabaseKey, Authorization: `Bearer ${supabaseKey}` },
+    });
+    if (!response.ok) return null;
 
-  const posts = await response.json();
-  return posts[0] || null;
+    const posts = await response.json();
+    return posts[0] || null;
+  } catch (error) {
+    console.error("[blog-meta] Falha ao consultar o artigo:", error);
+    return null;
+  }
 }
 
 export default async function handler(request, response) {
-  const siteUrl = (process.env.VITE_SITE_URL || `${request.headers["x-forwarded-proto"] || "https"}://${request.headers.host}`).replace(/\/$/, "");
-  const slug = request.query?.slug;
+  const requestOrigin = `${request.headers["x-forwarded-proto"] || "https"}://${request.headers.host}`;
+  const siteUrl = (process.env.VITE_SITE_URL || requestOrigin).replace(/\/$/, "");
+  const slug = String(request.query?.slug || "").replace(/^\/+|\/+$/g, "").split("/")[0];
+
+  let shell;
+  try {
+    const shellResponse = await fetch(`${requestOrigin}/index.html`);
+    shell = await shellResponse.text();
+  } catch (error) {
+    console.error("[blog-meta] Falha ao carregar o HTML base:", error);
+    response.statusCode = 502;
+    response.setHeader("Content-Type", "text/plain; charset=utf-8");
+    response.end("Nao foi possivel carregar o artigo.");
+    return;
+  }
+
+  const post = await fetchPost(slug);
+
+  if (!post) {
+    response.statusCode = 200;
+    response.setHeader("Content-Type", "text/html; charset=utf-8");
+    response.end(shell);
+    return;
+  }
 
   try {
-    const [post, shellResponse] = await Promise.all([
-      fetchPost(slug),
-      fetch(`${siteUrl}/index.html`),
-    ]);
-    const shell = await shellResponse.text();
-
-    if (!post) {
-      response.statusCode = 200;
-      response.setHeader("Content-Type", "text/html; charset=utf-8");
-      response.end(shell);
-      return;
-    }
-
     const url = post.canonical_url || `${siteUrl}/blog/${post.slug}`;
     const html = applySocialMetadata(shell, {
       title: post.seo_title || post.title || "Artigo | Alexandre Ivo",
@@ -96,6 +110,8 @@ export default async function handler(request, response) {
     response.end(html);
   } catch (error) {
     console.error("[blog-meta] Falha ao gerar metadados do artigo:", error);
-    response.redirect(307, `/blog/${encodeURIComponent(slug || "")}`);
+    response.statusCode = 200;
+    response.setHeader("Content-Type", "text/html; charset=utf-8");
+    response.end("<!doctype html><html lang=\"pt-BR\"><head><meta charset=\"utf-8\"><title>Alexandre Music Blog</title></head><body></body></html>");
   }
 }
