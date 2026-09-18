@@ -3187,6 +3187,27 @@ h3 {
   cursor: pointer;
 }
 
+.rich-content figure,
+.rich-editor-surface figure {
+  width: fit-content;
+  max-width: 100%;
+  margin: var(--space-5) auto;
+}
+
+.rich-content figure img,
+.rich-editor-surface figure img {
+  margin: 0;
+}
+
+.rich-content figcaption,
+.rich-editor-surface figcaption {
+  margin-top: var(--space-2);
+  color: var(--fg-3);
+  font-size: var(--text-sm);
+  line-height: 1.45;
+  text-align: center;
+}
+
 .rich-editor-surface img.is-selected {
   outline: 3px solid var(--accent);
   outline-offset: 4px;

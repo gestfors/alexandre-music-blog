@@ -61,7 +61,9 @@ export default function RichTextEditor({ id, name, value = "", onChange, onImage
 
   function deleteSelectedImage() {
     if (!selectedImageRef.current) return;
-    selectedImageRef.current.remove();
+    const image = selectedImageRef.current;
+    const imageContainer = image.closest("figure");
+    (imageContainer || image).remove();
     selectedImageRef.current = null;
     setHasSelectedImage(false);
     emitChange();
@@ -84,19 +86,31 @@ export default function RichTextEditor({ id, name, value = "", onChange, onImage
       if (!imageUrl) return;
 
       const alt = window.prompt("Texto alternativo da imagem", file.name.replace(/\.[^.]+$/, "")) || "";
+      const caption = window.prompt(
+        "Legenda da imagem (opcional): crédito, local ou informe se foi gerada por IA",
+        "",
+      ) || "";
       const image = document.createElement("img");
       image.src = imageUrl;
       image.alt = alt.trim();
       image.loading = "lazy";
 
+      const imageContainer = caption.trim() ? document.createElement("figure") : null;
+      if (imageContainer) {
+        const captionElement = document.createElement("figcaption");
+        captionElement.textContent = caption.trim();
+        imageContainer.append(image, captionElement);
+      }
+
       const editor = editorRef.current;
       editor?.focus();
       const range = savedRangeRef.current;
+      const insertedNode = imageContainer || image;
 
       if (range && editor?.contains(range.commonAncestorContainer)) {
         range.deleteContents();
-        range.insertNode(image);
-        range.setStartAfter(image);
+        range.insertNode(insertedNode);
+        range.setStartAfter(insertedNode);
         range.collapse(true);
         const selection = window.getSelection();
         selection.removeAllRanges();

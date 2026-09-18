@@ -5,6 +5,8 @@ const allowedTags = new Set([
   "BR",
   "EM",
   "DIV",
+  "FIGURE",
+  "FIGCAPTION",
   "H2",
   "H3",
   "I",
