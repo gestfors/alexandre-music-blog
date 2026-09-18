@@ -1,5 +1,5 @@
 export const contentSnapshots = {
-  "generatedAt": "2026-09-18T13:36:48.906Z",
+  "generatedAt": "2026-09-18T16:23:24.290Z",
   "blogPosts": [
     {
       "image": "https://uaurlrsgmenialfgoell.supabase.co/storage/v1/object/public/site-media/posts/jimi-hendrix-historia-carreira-e-importancia-para-a-musica/image-2026-09-18T12-44-35-642Z.jpg",
